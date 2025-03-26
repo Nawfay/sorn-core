@@ -16,8 +16,15 @@ func DownloadPrep(albumID int) (bool, error) {
 		return false, err
 	}
 
-	artistExists(album.ArtistID)
-	albumExists(album.ID)
+	exists := artistExists(album.ArtistID)
+	if !exists {
+		makeArtist(album.ArtistID)
+	}
+	exists = albumExists(album.ID)
+	if !exists {
+		// do something wait
+	}
+
 
 	return true, nil
 
@@ -66,8 +73,6 @@ func makeArtist(id int) error{
 	return nil
 
 }	
-
-
 
 
 func albumExists(albumID int) bool {

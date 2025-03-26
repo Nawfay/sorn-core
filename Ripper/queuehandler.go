@@ -1,0 +1,6 @@
+package ripper
+
+
+
+
+func 
