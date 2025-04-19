@@ -1,16 +1,17 @@
 package main
 
 import (
+	// "sorn/core/ripper"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"sorn/core/db"
 )
 
+
 func main() {
 	app := fiber.New()
 
-	
 	db.DBInit()
 	defer db.DBClose()
 
@@ -23,6 +24,6 @@ func main() {
 
 	SearchRoutes(app)
 
-
 	app.Listen("localhost:9000")
 }
+

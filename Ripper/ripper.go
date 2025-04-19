@@ -1,6 +1,5 @@
 package ripper
 
-
 import (
 	"bytes"
 	"crypto/cipher"
@@ -16,6 +15,8 @@ import (
 	"golang.org/x/crypto/blowfish"
 )
 
+
+var Config DeezerLogin
 
 
 type Song struct {
@@ -47,6 +48,8 @@ type MediaResponse struct {
 }
 
 func DownloadTrack(trackID string, outputPath string) error {
+	Config = getCredentials()
+	
 	song, err := getTrackMetadata(trackID)
 	if err != nil {
 		return fmt.Errorf("metadata error: %w", err)
@@ -80,6 +83,7 @@ func DownloadTrack(trackID string, outputPath string) error {
 		song.ID,
 	)
 }
+
 
 
 func getTrackMetadata(trackID string) (*Song, error) {
@@ -157,7 +161,6 @@ func downloadAndDecrypt(url, path string, trackID int) error {
 
 	trackIDStr := fmt.Sprintf("%d", trackID)
 
-
     key := generateBlowfishKey(trackIDStr)
     buffer := make([]byte, ChunkSize)
 
@@ -231,4 +234,3 @@ func generateBlowfishKey(songID string) []byte {
 
 	return key
 }
-

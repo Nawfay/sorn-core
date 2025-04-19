@@ -1,6 +1,2 @@
 package ripper
 
-
-
-
-func 

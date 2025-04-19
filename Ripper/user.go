@@ -1,23 +1,47 @@
-package ripper 
+package ripper
 
+import (
+	"encoding/json"
+	"log"
+	"os"
+)
 
-
-var Config = struct {
+type DeezerLogin struct {
 	ARLCookie      string
 	LicenseToken   string
 	BlowfishSecret string
 	BlowfishIV     string
-}{
-	ARLCookie:      "8d1b4c19398a63e71498948245c73724f6798448691c1696aa52af480eb1cd573b943b311b8e8caa9ee19956e9ee441b3f9a809a60d6911351e4dfe42848a5e2c7b2b312ef2adf9437665e84401f9316685204add12029dac99645697c98cf80",
-	LicenseToken:   "AAAAAmfW8uBn6rlgFo2SPQeagYjuPVCJto7VYRu51OK45xKOAzOjJZYbDG7nFTHL5wH9_Vljve40tlcG7fR8wY80vEI2dapH4TYvkAHo-qirmXkwtbNIGFA8xzc",
-	BlowfishSecret: "g4el58wc0zvf9na1",
-	BlowfishIV:     "0001020304050607",
 }
 
 
-// login into deezer 
+func setCredentials(credentials DeezerLogin) {
+	data, err := json.Marshal(credentials)
+	if err != nil {
+		log.Fatalf("Failed to marshal JSON: %v", err)
+	}
 
-func Login() {
-	// implement login logic here
+	err = os.WriteFile("cred.json", data, 0644)
+	if err != nil {
+		log.Fatalf("Failed to write file: %v", err)
+	}
 }
+
+
+
+func getCredentials() DeezerLogin {
+	data, err := os.ReadFile("cred.json")
+	if err != nil {
+		log.Fatalf("Failed to read file: %v", err)
+	}
+
+	var credentials DeezerLogin
+	err = json.Unmarshal(data, &credentials)
+	if err != nil {
+		log.Fatalf("Failed to unmarshal JSON: %v", err)
+	}
+
+	return credentials
+}
+
+
 
